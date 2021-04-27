@@ -1,11 +1,11 @@
 # Площадь треугольника
 
 puts 'Введите основание <a>'
-a = gets.chomp.to_i
+a = gets.chomp.to_f
 puts 'Введите высоту <h>'
-h = gets.chomp.to_i
+h = gets.chomp.to_f
 
-if a == 0 || h == 0
+if a <= 0 || h <= 0
   puts 'Введенные данные не корректны'
 else
   area = 1/2.to_f * a * h

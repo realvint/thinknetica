@@ -1,11 +1,11 @@
 # Прямоугольный треугольник
 
 puts 'Введите сторону A'
-a = gets.to_i
+a = gets.to_f
 puts 'Введите сторону B'
-b = gets.to_i
+b = gets.to_f
 puts 'Введите сторону C'
-c = gets.to_i
+c = gets.to_f
 
 if a >= b && a > c
   hypotenuse = a
