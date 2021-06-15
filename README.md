@@ -1,2 +1,2 @@
-# thinknetica-course
-Learning ruby on rails 
+# thinknetica
+Ruby on rails 
