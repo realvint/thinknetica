@@ -1,2 +1,0 @@
-# thinknetica
-Ruby on rails 
