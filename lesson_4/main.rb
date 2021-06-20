@@ -61,6 +61,7 @@ class Main
     @stations << Station.new(name)
     puts 'Станция создана'
   end
+
   def create_train
     puts "Введите номер для нового поезда"
     number = gets.chomp
@@ -71,6 +72,7 @@ class Main
     @trains << CargoTrain.new(number) if type == 2
     puts 'Поезд создан'
   end
+
   def create_route
     puts "Введите название нового маршрута:"
     name = gets.chomp
@@ -83,6 +85,7 @@ class Main
     @routes << Route.new(name, first_station, last_station)
     puts 'Маршрут создан'
   end
+
   def add_station_to_route
     puts "Введите название маршрута для добавления станции "
     name = gets.chomp
@@ -93,6 +96,7 @@ class Main
     route.add(station)
     puts 'Станция добавлена в маршрут'
   end
+
   def remove_station_from_route
     puts "Введите название маршрута для удаления станции "
     name_route = gets.chomp
@@ -103,6 +107,7 @@ class Main
     route.delete(station)
     puts 'Станция удалена из маршрута'
   end
+
   def get_route_to_train
     puts "Введите маршрут"
     name = gets.chomp
@@ -113,6 +118,7 @@ class Main
     train.take_route(route)
     puts "Поезд поставлен на маршрут"
   end
+
   def add_wagon_to_train # мы не можем добавить к поезду тип вагона, отличный от типа поезда
     puts "Введите номер поезда для добавления вагона"
     number = gets.chomp
@@ -123,6 +129,7 @@ class Main
       end
     puts 'Вагон добавлен к поезду'
   end
+
   def remove_wagon_from_train
     puts "Введите номер поезда для удаления вагона"
     number = gets.chomp
@@ -130,6 +137,7 @@ class Main
     train.delete_wagon
     puts 'Вагон отцеплен от поезда'
   end
+
   def move_train_on_route
     puts " Введите номер поезда для перемещения по маршруту"
     number = gets.chomp
@@ -141,10 +149,12 @@ class Main
     train.go_prev_station if input == 2
     puts 'Поезд перемещён по маршруту'
   end
+
   def show_stations_list
     @stations.each { |station| puts station.name }
 
   end
+
   def show_trains_on_station
     puts " Введите название станции для просмотра доступных поездов"
     name = gets.chomp
@@ -155,9 +165,11 @@ class Main
   def find_train(number)
     @trains.find { |train| train.number == number }
   end
+
   def find_route(name)
     @routes.find { |route| route.name == name }
   end
+
   def find_station(name)
     @stations.find { |station| station.name == name }
   end
