@@ -1,7 +1,8 @@
 class Route
-  attr_reader :route
+  attr_reader :name, :route
 
-  def initialize(first_station, last_station)
+  def initialize(name, first_station, last_station)
+    @name = name
     @route = [first_station, last_station]
   end
 
