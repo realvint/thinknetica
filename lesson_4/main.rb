@@ -15,39 +15,41 @@ class Main
   end
 
   def start
-    puts " Управление железнодорожным вокзалом:
-    [1] Создать станцию введите '1'
-    [2] Создать поезд  введите '2'
-    [3] Создать маршрут введите '3'
-    [4] Добавить станцию к маршруту введите '4'
-    [5] Удалить станцию из маршрута введите '5'
-    [6] Назначить маршрут поезду введите '6'
-    [7] Добавить вагон поезду введите '7'
-    [8] Отцепить вагон от поезда введите '8'
-    [9] Переместить поезд по маршруту введите '9'
-    [10] Просмотреть список станций введите '10'
-    [11] Просмотреть список поездов на станции введите '11'
-    [0] Чтобы выйти из программы введите '0' "
-    input = gets.chomp.to_i
+    loop do
+      puts " Управление железнодорожным вокзалом:
+      [1] Создать станцию введите '1'
+      [2] Создать поезд  введите '2'
+      [3] Создать маршрут введите '3'
+      [4] Добавить станцию к маршруту введите '4'
+      [5] Удалить станцию из маршрута введите '5'
+      [6] Назначить маршрут поезду введите '6'
+      [7] Добавить вагон поезду введите '7'
+      [8] Отцепить вагон от поезда введите '8'
+      [9] Переместить поезд по маршруту введите '9'
+      [10] Просмотреть список станций введите '10'
+      [11] Просмотреть список поездов на станции введите '11'
+      [0] Чтобы выйти из программы введите '0' "
+      input = gets.chomp.to_i
 
-    case input
-    when 0 then
-      puts "Программа завершена"
-      exit
-    when 1 then create_station
-    when 2 then create_train
-    when 3 then create_route
-    when 4 then add_station_to_route
-    when 5 then remove_station_from_route
-    when 6 then get_route_to_train
-    when 7 then add_wagon_to_train
-    when 8 then remove_wagon_from_train
-    when 9 then move_train_on_route
-    when 10 then show_stations_list
-    when 11 then show_trains_on_station
-    else
-      puts "Программа завершена"
-      exit
+      case input
+      when 0 then
+        puts "Программа завершена"
+        exit
+      when 1 then create_station
+      when 2 then create_train
+      when 3 then create_route
+      when 4 then add_station_to_route
+      when 5 then remove_station_from_route
+      when 6 then get_route_to_train
+      when 7 then add_wagon_to_train
+      when 8 then remove_wagon_from_train
+      when 9 then move_train_on_route
+      when 10 then show_stations_list
+      when 11 then show_trains_on_station
+      else
+        puts "Программа завершена"
+        exit
+      end
     end
   end
 
@@ -58,7 +60,6 @@ class Main
     name = gets.chomp
     @stations << Station.new(name)
     puts 'Станция создана'
-    start
   end
   def create_train
     puts "Введите номер для нового поезда"
@@ -69,7 +70,6 @@ class Main
     @trains << PassengerTrain.new(number) if type == 1
     @trains << CargoTrain.new(number) if type == 2
     puts 'Поезд создан'
-    start
   end
   def create_route
     puts "Введите название нового маршрута:"
@@ -82,7 +82,6 @@ class Main
     last_station = find_station(last)
     @routes << Route.new(name, first_station, last_station)
     puts 'Маршрут создан'
-    start
   end
   def add_station_to_route
     puts "Введите название маршрута для добавления станции "
@@ -93,7 +92,6 @@ class Main
     station = find_station(new_station)
     route.add(station)
     puts 'Станция добавлена в маршрут'
-    start
   end
   def remove_station_from_route
     puts "Введите название маршрута для удаления станции "
@@ -104,7 +102,6 @@ class Main
     route = find_route(name_route)
     route.delete(station)
     puts 'Станция удалена из маршрута'
-    start
   end
   def get_route_to_train
     puts "Введите маршрут"
@@ -115,7 +112,6 @@ class Main
     train = find_train(number)
     train.take_route(route)
     puts "Поезд поставлен на маршрут"
-    start
   end
   def add_wagon_to_train # мы не можем добавить к поезду тип вагона, отличный от типа поезда
     puts "Введите номер поезда для добавления вагона"
@@ -126,7 +122,6 @@ class Main
       else train.add_wagon(PassengerWagon.new)
       end
     puts 'Вагон добавлен к поезду'
-    start
   end
   def remove_wagon_from_train
     puts "Введите номер поезда для удаления вагона"
@@ -134,7 +129,6 @@ class Main
     train = find_train(number)
     train.delete_wagon
     puts 'Вагон отцеплен от поезда'
-    start
   end
   def move_train_on_route
     puts " Введите номер поезда для перемещения по маршруту"
@@ -146,18 +140,16 @@ class Main
     train.go_next_station if input == 1
     train.go_prev_station if input == 2
     puts 'Поезд перемещён по маршруту'
-    start
   end
   def show_stations_list
     @stations.each { |station| puts station.name }
-    start
+
   end
   def show_trains_on_station
     puts " Введите название станции для просмотра доступных поездов"
     name = gets.chomp
     station = find_station(name)
     puts station.trains
-    start
   end
 
   def find_train(number)
