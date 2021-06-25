@@ -56,34 +56,47 @@ class Main
   private # Это служебные методы для управления всей системой, они не должны быть доступны вне класса
 
   def create_station
-    puts "Введите название"
-    name = gets.chomp
-    @stations << Station.new(name)
-    puts 'Станция создана'
+    begin
+      puts "Введите название для станции"
+      name = gets.chomp
+      @stations << Station.new(name)
+      puts "Станция #{name} создана"
+    rescue Exception => e
+      puts e.message
+    end
   end
 
   def create_train
-    puts "Введите номер для нового поезда"
-    number = gets.chomp
-    puts "Введите [1] для создания пассажирского поезда
-          Введите [2] для создание грузового поезда"
-    type = gets.chomp.to_i
-    @trains << PassengerTrain.new(number) if type == 1
-    @trains << CargoTrain.new(number) if type == 2
-    puts 'Поезд создан'
+    begin
+      puts "Введите номер для нового поезда"
+      number = gets.chomp
+      puts "Введите [passenger] для создания пассажирского поезда"
+      puts "Введите [cargo] для создание грузового поезда"
+      type = gets.chomp
+      @trains << PassengerTrain.new(number,type) if type == 'passenger'
+      @trains << CargoTrain.new(number,type) if type == 'cargo'
+      puts "Поезд c номером #{number} типа #{type} создан"
+    rescue Exception => e
+      puts e.message
+      retry
+    end
   end
 
   def create_route
-    puts "Введите название нового маршрута:"
-    name = gets.chomp
-    puts "Введите название начальной станции:"
-    first = gets.chomp
-    first_station = find_station(first)
-    puts "Введите название конечной станции:"
-    last = gets.chomp
-    last_station = find_station(last)
-    @routes << Route.new(name, first_station, last_station)
-    puts 'Маршрут создан'
+    begin
+      puts "Введите название для нового маршрута:"
+      name = gets.chomp
+      puts "Введите название начальной станции:"
+      first = gets.chomp
+      first_station = find_station(first)
+      puts "Введите название конечной станции:"
+      last = gets.chomp
+      last_station = find_station(last)
+      @routes << Route.new(name, first_station, last_station)
+      puts "Маршрут #{name} создан"
+    rescue Exception => e
+      puts e.message
+    end
   end
 
   def add_station_to_route

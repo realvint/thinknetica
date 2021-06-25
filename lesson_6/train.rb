@@ -7,15 +7,26 @@ class Train
 
   attr_reader :speed, :wagons, :number, :type
 
+  NUMBER_FORMAT = /^\w{3}[-]*\w{2}$/
+  TYPE_FORMAT = /^(passenger|cargo)$/
+
   @@trains = []
 
   def initialize(number, type)
     register_instance
     @type = type
     @number = number
+    validate!
     @speed = 0
     @wagons = []
     @@trains << self
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def self.find(number)
@@ -66,6 +77,10 @@ class Train
 
   private # Эти методы используются только внутри класса Train
 
+  def validate!
+    raise StandardError, 'Ошибка! Введите номер поезда в следующем формате: три буквы/три цифры, необязательный дефис и две буквы/две цифры' if number !~ NUMBER_FORMAT
+    raise StandardError, 'Ошибка! Введите тип поезда в следующем формате: пассажирский - [passenger], грузовой - [cargo]' if type !~ TYPE_FORMAT
+  end
   def current_station # Возвращает текущую станцию, на которой стоит поезд
     @route.route[@station_index]
   end

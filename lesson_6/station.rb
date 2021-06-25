@@ -6,11 +6,21 @@ class Station
   attr_reader :trains, :name
   @@all_stations = []
 
+  NAME_FORMAT = /^[а-яa-z]{3}$/i
+
   def initialize(name)
     register_instance
     @name = name
+    validate!
     @trains = []
     @@all_stations << self
+  end
+
+  def valid?
+    validate!
+    true
+  rescue
+    false
   end
 
   def self.all
@@ -27,5 +37,11 @@ class Station
 
   def train_depart(train) # Отправить поезд
     @trains.delete(train)
+  end
+
+  private
+
+  def validate!
+    raise StandardError, 'Ошибка! формат названия станции: три буквы' if name !~ NAME_FORMAT
   end
 end
