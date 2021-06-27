@@ -28,6 +28,8 @@ class Main
       [9] Переместить поезд по маршруту введите '9'
       [10] Просмотреть список станций введите '10'
       [11] Просмотреть список поездов на станции введите '11'
+      [12] Просмотреть список вагонов у поезда введите '12'
+      [13] Занять место/объем в вагоне введите '13'
       [0] Чтобы выйти из программы введите '0' "
       input = gets.chomp.to_i
 
@@ -46,6 +48,8 @@ class Main
       when 9 then move_train_on_route
       when 10 then show_stations_list
       when 11 then show_trains_on_station
+      when 12 then show_wagons_at_train
+      when 13 then take_unit_on_wagon
       else
         puts "Программа завершена"
         exit
@@ -136,9 +140,15 @@ class Main
     puts "Введите номер поезда для добавления вагона"
     number = gets.chomp
     train = find_train(number)
+    #по типу поезда строить запрос на количество мест/ объем
       if train.type == 'cargo'
-        train.add_wagon(CargoWagon.new)
-      else train.add_wagon(PassengerWagon.new)
+        puts("Введите общий объём вместимого груза:")
+        unit_quantity = gets.chomp
+        train.add_wagon(CargoWagon.new(unit_quantity))
+      else
+        puts("Введите количество пассажирских мест:")
+        unit_quantity = gets.chomp
+        train.add_wagon(PassengerWagon.new(unit_quantity))
       end
     puts 'Вагон добавлен к поезду'
   end
@@ -149,6 +159,31 @@ class Main
     train = find_train(number)
     train.delete_wagon
     puts 'Вагон отцеплен от поезда'
+  end
+
+  def show_wagons_at_train # Выводим список вагонов у поезда
+    puts "Введите номер поезда для просмотра вагонов"
+    number_of_train = gets.chomp
+    train = find_train(number_of_train)
+    train.wagons_each { |wagon| puts wagon}
+  end
+
+  def take_unit_on_wagon # Занять место/объём в вагоне
+    puts "Введите номер поезда для просмотра вагонов"
+    number_of_train = gets.chomp
+    train = find_train(number_of_train)
+    puts "Введите номер вагона"
+    number_of_wagon = gets.chomp
+    wagon = find_wagon(train, number_of_wagon)
+    if wagon.type == 'cargo'
+      puts 'Введите объем, который нужно занять'
+      quantity = gets.chomp.to_i
+      wagon.take_unit(quantity)
+      puts 'Погрузка успешна'
+    else
+      wagon.take_unit
+      puts 'Место успешно занято'
+    end
   end
 
   def move_train_on_route
@@ -172,7 +207,7 @@ class Main
     puts " Введите название станции для просмотра доступных поездов"
     name = gets.chomp
     station = find_station(name)
-    puts station.trains
+    station.trains_each {|train| puts train}
   end
 
   def find_train(number)
@@ -185,6 +220,10 @@ class Main
 
   def find_station(name)
     @stations.find { |station| station.name == name }
+  end
+
+  def find_wagon(train, number)
+    train.wagons.find { |wagon| wagon.number == number }
   end
 end
 

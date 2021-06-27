@@ -53,6 +53,10 @@ class Train
     end
   end
 
+  def wagons_each(&block)
+    @wagons.each { |wagon| block.call(wagon) }
+  end
+
   def take_route(route) # Принять маршрут следования
     @route = route
     @station_index = 0
