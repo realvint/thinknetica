@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'instance_counter'
 
 class Route
   include InstanceCounter
   attr_reader :name, :route
 
-  NAME_FORMAT = /^[а-яa-z]{3}$/i
+  NAME_FORMAT = /^[а-яa-z]{3}$/i.freeze
 
   def initialize(name, first_station, last_station)
     register_instance
@@ -16,20 +18,20 @@ class Route
   def valid?
     validate!
     true
-  rescue
+  rescue StandardError
     false
   end
 
-  def add(station) # Добавить новую станцию предпоследней
+  def add(station)
     @route.insert(-2, station)
   end
 
-  def delete(station) # Удалить станцию из маршрута
+  def delete(station)
     @route.delete(station)
   end
 
-  def route_list # Вывод списка всех станций на маршруте. Для получения маршрута использовать геттер route
-    @route.each_with_index{ |station, index| puts "#{index + 1}. #{station}"}
+  def route_list
+    @route.each_with_index { |station, index| puts "#{index + 1}. #{station}" }
   end
 
   private
