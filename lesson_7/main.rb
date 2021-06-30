@@ -57,7 +57,7 @@ class Main
     end
   end
 
-  private # Это служебные методы для управления всей системой, они не должны быть доступны вне класса
+  private
 
   def create_station
     begin
@@ -136,11 +136,10 @@ class Main
     puts "Поезд поставлен на маршрут"
   end
 
-  def add_wagon_to_train # мы не можем добавить к поезду тип вагона, отличный от типа поезда
+  def add_wagon_to_train
     puts "Введите номер поезда для добавления вагона"
     number = gets.chomp
     train = find_train(number)
-    #по типу поезда строить запрос на количество мест/ объем
       if train.type == 'cargo'
         puts("Введите общий объём вместимого груза:")
         unit_quantity = gets.chomp
