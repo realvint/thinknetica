@@ -1,12 +1,21 @@
 # frozen_string_literal: true
-
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Route
   include InstanceCounter
+  include Validation
   attr_reader :name, :route
 
   NAME_FORMAT = /^[а-яa-z]{3}$/i.freeze
+
+  validate :name, :presence
+  validate :name, :format, NAME_FORMAT
+
+  validate :first_station, :presence
+  validate :last_station, :presence
+
+  validate :route, :type, Route
 
   def initialize(name, first_station, last_station)
     register_instance
@@ -32,11 +41,5 @@ class Route
 
   def route_list
     @route.each_with_index { |station, index| puts "#{index + 1}. #{station}" }
-  end
-
-  private
-
-  def validate!
-    raise StandardError, 'Ошибка! формат названия маршрута: три буквы' if name !~ NAME_FORMAT
   end
 end

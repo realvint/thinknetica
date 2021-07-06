@@ -1,13 +1,22 @@
 # frozen_string_literal: true
-
 require_relative 'instance_counter'
+require_relative 'validation'
+require_relative 'accessors'
 
 class Station
   include InstanceCounter
+  include Validation
+  include Accessors
+
+  NAME_FORMAT = /^[а-яa-z]{3}$/i.freeze
 
   attr_reader :trains, :name
 
-  NAME_FORMAT = /^[а-яa-z]{3}$/i.freeze
+  attr_accessor_with_history :first, :last
+  strong_attr_accessor :strong, String
+
+  validate :name, :presence
+  validate name, :format, NAME_FORMAT
 
   def initialize(name)
     register_instance
@@ -43,11 +52,5 @@ class Station
 
   def trains_each(&block)
     @trains.each { |train| block.call(train) }
-  end
-
-  private
-
-  def validate!
-    raise StandardError, 'Ошибка! формат названия станции: три буквы' if name !~ NAME_FORMAT
   end
 end

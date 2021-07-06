@@ -1,16 +1,23 @@
 # frozen_string_literal: true
-
 require_relative 'manufacturer'
 require_relative 'instance_counter'
+require_relative 'validation'
 
 class Train
   include Manufacturer
   include InstanceCounter
+  include Validation
 
   attr_reader :speed, :wagons, :number, :type
 
   NUMBER_FORMAT = /^\w{3}-*\w{2}$/.freeze
   TYPE_FORMAT = /^(passenger|cargo)$/.freeze
+
+  validate :number, :presence
+  validate :number, :format, NUMBER_FORMAT
+
+  validate :type, :presence
+  validate :type, :format, TYPE_FORMAT
 
   def initialize(number, type)
     register_instance
@@ -81,19 +88,6 @@ class Train
   end
 
   private
-
-  def validate!
-    if number !~ NUMBER_FORMAT
-      raise StandardError,
-            'Ошибка! Введите номер поезда в следующем формате: три буквы/три цифры,
-            необязательный дефис и две буквы/две цифры'
-    end
-    return unless type !~ TYPE_FORMAT
-
-    raise StandardError,
-          'Ошибка! Введите тип поезда в следующем формате:
-          пассажирский - [passenger], грузовой - [cargo]'
-  end
 
   def current_station
     @route.route[@station_index]

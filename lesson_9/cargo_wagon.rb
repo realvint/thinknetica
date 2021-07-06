@@ -1,16 +1,20 @@
 # frozen_string_literal: true
-
 require_relative 'manufacturer'
+require_relative 'validation'
 
 class CargoWagon
   attr_reader :taken_unit_quantity, :number, :type
 
   include Manufacturer
+  include Validation
+
+  validate :unit_quantity, :presence
 
   def initialize(unit_quantity)
     @number = rand(100)
     @type = :cargo
     @unit_quantity = unit_quantity
+    validate!
     @taken_unit_quantity = 0
   end
 
