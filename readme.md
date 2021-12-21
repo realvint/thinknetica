@@ -1,2 +1,2 @@
-# thinknetica 
-Ruby on rails school
+# Thinknetica 
+Ruby on rails school lessons
